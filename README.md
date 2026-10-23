@@ -52,15 +52,29 @@ Open [http://localhost:5173](http://localhost:5173). The API should be at [http:
 forekey-business-dashboard/
 ├── frontend/          React app
 ├── backend/           Laravel API
-├── screenshots/       App screenshots (add after running locally)
+├── screenshots/       UI captures (see below)
 └── README.md
 ```
 
 See `frontend/README.md` and `backend/README.md` for details and API examples.
 
+## Screenshots
+
+### Customer list
+
+![Customer list with search, sorting, pagination, and row actions](screenshots/CustomerList.png)
+
+### Add customer
+
+![Add customer modal](screenshots/CustomerAdd.png)
+
+### Edit customer
+
+![Edit customer modal](screenshots/CustomerEdit.png)
+
 ## Project status
 
-Core implementation complete (API, database seeder, dashboard and customer UI). Capture screenshots into `screenshots/` from your running dev environment.
+Core implementation complete (API, database seeder, dashboard and customer UI). Screenshots above are from the local dev environment.
 
 ## About Forekey Technologies
 

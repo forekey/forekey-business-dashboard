@@ -1,47 +1,71 @@
 # Forekey Business Dashboard
 
-A business management dashboard built with React and Laravel, designed to demonstrate modern frontend development, REST API integration, and maintainable application architecture.
+A portfolio business admin dashboard: **React + Vite** frontend and **Laravel** REST API with fictional customer data.
 
-## Overview
+## Features
 
-This project is an independent portfolio demonstration by Forekey Technologies. It uses fictional sample data and is separate from any production or client application.
+- Dashboard summary cards (totals, active/inactive, new this month)
+- Customer list with search, create, edit, and delete
+- Server-side validation and JSON API
+- SQLite by default (MySQL-ready configuration)
 
-## Planned Features
+## Prerequisites
 
-- Business dashboard with summary cards
-- Customer management and CRUD operations
-- React frontend
-- Laravel REST API
-- API validation and error handling
-- Setup and development documentation
+| Tool | Version (verified) |
+|------|-------------------|
+| PHP | 8.5.12 + `pdo_sqlite` |
+| Composer | 2.10.3 |
+| Node.js | 24.21.0 |
+| npm | 11.19.0 |
+| Laravel | 13.38.0 |
 
-## Technology Stack
+Install the SQLite PHP extension if needed: `sudo apt install php8.5-sqlite3` (adjust version).
 
-- **Frontend:** React, Vite, JavaScript
-- **Backend:** PHP, Laravel
-- **API:** REST
-- **Version Control:** Git and GitHub
+## Quick start
 
-## Project Structure
+### Backend
 
-- `frontend/` — React application
-- `backend/` — Laravel API
-- `docs/` — Project documentation and screenshots
+```bash
+cd backend
+composer install
+cp .env.example .env
+php artisan key:generate
+touch database/database.sqlite
+php artisan migrate --seed
+php artisan serve
+```
 
-## Getting Started
+### Frontend
 
-Setup instructions for the frontend and backend will be added as the project implementation progresses.
+```bash
+cd frontend
+npm install
+cp .env.example .env
+npm run dev
+```
 
-## Project Status
+Open [http://localhost:5173](http://localhost:5173). The API should be at [http://127.0.0.1:8000/api](http://127.0.0.1:8000/api).
 
-Initial development — project structure and application setup.
+## Project structure
+
+```text
+forekey-business-dashboard/
+├── frontend/          React app
+├── backend/           Laravel API
+├── screenshots/       App screenshots (add after running locally)
+└── README.md
+```
+
+See `frontend/README.md` and `backend/README.md` for details and API examples.
+
+## Project status
+
+Core implementation complete (API, database seeder, dashboard and customer UI). Capture screenshots into `screenshots/` from your running dev environment.
 
 ## About Forekey Technologies
-
-Forekey Technologies builds custom web applications, SaaS products, API integrations, and AI-enabled business solutions.
 
 - **Website:** https://www.forekey.in/
 - **Email:** contact@forekey.in
 - **GitHub:** https://github.com/forekey
 
-This repository is a portfolio demonstration and does not contain confidential client code or production data.
+Portfolio demonstration only — no production or confidential data.

@@ -1,0 +1,20 @@
+# Environment secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and build output
+node_modules/
+vendor/
+dist/
+build/
+
+# Logs and local databases
+*.log
+*.sqlite
+*.sqlite-*
+
+# IDE files
+.idea/
+.vscode/
+.DS_Store

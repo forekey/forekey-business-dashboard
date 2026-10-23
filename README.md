@@ -60,17 +60,47 @@ See `frontend/README.md` and `backend/README.md` for details and API examples.
 
 ## Screenshots
 
-### Customer list
+Captures from the local dev environment. Desktop layouts use the full sidebar; mobile layouts use the slide-out navigation (see **Mobile → Sidebar**).
+
+### Desktop
+
+#### Dashboard
+
+![Dashboard summary cards on desktop](screenshots/Dashboard.png)
+
+#### Customer list
 
 ![Customer list with search, sorting, pagination, and row actions](screenshots/CustomerList.png)
 
-### Add customer
+#### Add customer
 
 ![Add customer modal](screenshots/CustomerAdd.png)
 
-### Edit customer
+#### Edit customer
 
 ![Edit customer modal](screenshots/CustomerEdit.png)
+
+### Mobile
+
+#### Sidebar
+
+![Mobile navigation drawer](screenshots/mobile/Sidebar.png)
+
+#### Dashboard
+
+![Dashboard on mobile](screenshots/mobile/Dashboard.png)
+
+#### Customer list
+
+![Customer list on mobile](screenshots/mobile/CustomerList.png)
+
+#### Add customer
+
+![Add customer modal on mobile](screenshots/mobile/CustomerAdd.png)
+
+#### Edit customer
+
+![Edit customer modal on mobile](screenshots/mobile/CustomerEdit.png)
 
 ## Project status
 

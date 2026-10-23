@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const navItems = [
@@ -5,9 +6,23 @@ const navItems = [
   { to: '/customers', label: 'Customers' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ id, isOpen, onClose }) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
   return (
-    <aside className="sidebar">
+    <aside
+      id={id}
+      className={`sidebar${isOpen ? ' sidebar--open' : ''}`}
+      aria-hidden={isMobile && !isOpen ? true : undefined}
+    >
       <div className="sidebar__brand">
         <span className="sidebar__logo" aria-hidden="true">F</span>
         <div>
@@ -25,6 +40,7 @@ export default function Sidebar() {
             className={({ isActive }) =>
               `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
             }
+            onClick={onClose}
           >
             {item.label}
           </NavLink>

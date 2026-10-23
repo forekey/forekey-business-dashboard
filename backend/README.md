@@ -38,11 +38,19 @@ Default `.env` uses SQLite at `database/database.sqlite`. To use MySQL, set `DB_
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/dashboard/stats` | Dashboard summary JSON |
-| GET | `/api/customers` | List customers |
+| GET | `/api/customers` | Paginated list (query: `page`, `per_page`, `sort`, `direction`, `search`) |
 | POST | `/api/customers` | Create customer (201) |
 | GET | `/api/customers/{id}` | Single customer |
 | PUT/PATCH | `/api/customers/{id}` | Update customer |
 | DELETE | `/api/customers/{id}` | Delete customer (204) |
+
+### List customers (paginated)
+
+`GET /api/customers?page=1&per_page=7&sort=company&direction=desc&search=catalog`
+
+Returns Laravel pagination JSON (`data`, `current_page`, `last_page`, `per_page`, `total`, etc.).
+
+Allowed `sort` values: `name`, `email`, `phone`, `company`, `status`, `created_at`.
 
 ### Dashboard stats response
 

@@ -29,11 +29,37 @@ class CustomerController extends Controller
         ];
     }
 
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $customers = Customer::query()
-            ->orderByDesc('created_at')
-            ->get();
+        $validated = $request->validate([
+            'page' => ['sometimes', 'integer', 'min:1'],
+            'per_page' => ['sometimes', 'integer', 'min:1', 'max:100'],
+            'sort' => ['sometimes', 'string', Rule::in([
+                'name', 'email', 'phone', 'company', 'status', 'created_at',
+            ])],
+            'direction' => ['sometimes', 'string', Rule::in(['asc', 'desc'])],
+            'search' => ['sometimes', 'nullable', 'string', 'max:255'],
+        ]);
+
+        $perPage = $validated['per_page'] ?? 7;
+        $sort = $validated['sort'] ?? 'company';
+        $direction = $validated['direction'] ?? 'desc';
+        $search = isset($validated['search']) ? trim($validated['search']) : '';
+
+        $query = Customer::query();
+
+        if ($search !== '') {
+            $term = '%'.$search.'%';
+            $query->where(function ($q) use ($term) {
+                $q->where('name', 'like', $term)
+                    ->orWhere('email', 'like', $term)
+                    ->orWhere('company', 'like', $term);
+            });
+        }
+
+        $customers = $query
+            ->orderBy($sort, $direction)
+            ->paginate($perPage);
 
         return response()->json($customers);
     }

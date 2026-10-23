@@ -13,8 +13,11 @@ export async function fetchDashboardStats() {
   return data
 }
 
-export async function fetchCustomers() {
-  const { data } = await api.get('/customers')
+/**
+ * @param {{ page?: number, per_page?: number, sort?: string, direction?: 'asc'|'desc', search?: string }} params
+ */
+export async function fetchCustomers(params = {}) {
+  const { data } = await api.get('/customers', { params })
   return data
 }
 

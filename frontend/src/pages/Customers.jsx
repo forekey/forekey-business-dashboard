@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import CustomerForm, { customerToForm } from '../components/CustomerForm'
-import CustomerTable from '../components/CustomerTable'
+import CustomerTable, { CUSTOMERS_PAGE_SIZE } from '../components/CustomerTable'
 import Modal from '../components/Modal'
 import {
   createCustomer,
@@ -13,6 +13,10 @@ import {
 
 export default function Customers() {
   const [customers, setCustomers] = useState([])
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(1)
+  const [sortKey, setSortKey] = useState('company')
+  const [sortDir, setSortDir] = useState('desc')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
@@ -27,19 +31,47 @@ export default function Customers() {
     setLoading(true)
     setError('')
     try {
-      const data = await fetchCustomers()
-      setCustomers(data)
+      const data = await fetchCustomers({
+        page,
+        per_page: CUSTOMERS_PAGE_SIZE,
+        sort: sortKey,
+        direction: sortDir,
+        search: search.trim() || undefined,
+      })
+      const lastPage = Math.max(1, data.last_page ?? 1)
+      if (page > lastPage) {
+        setPage(lastPage)
+        return
+      }
+      setCustomers(data.data ?? [])
+      setTotalPages(lastPage)
     } catch (err) {
       setCustomers([])
+      setTotalPages(1)
       setError(getErrorMessage(err, 'Could not load customers.'))
     } finally {
       setLoading(false)
     }
-  }, [])
+  }, [page, sortKey, sortDir, search])
 
   useEffect(() => {
     load()
   }, [load])
+
+  const handleSort = (key) => {
+    if (sortKey === key) {
+      setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'))
+    } else {
+      setSortKey(key)
+      setSortDir('asc')
+    }
+    setPage(1)
+  }
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value)
+    setPage(1)
+  }
 
   const openCreate = () => {
     setEditing(null)
@@ -101,14 +133,7 @@ export default function Customers() {
     }
   }
 
-  const q = search.trim().toLowerCase()
-  const filtered = q
-    ? customers.filter((c) =>
-        [c.name, c.email, c.company]
-          .filter(Boolean)
-          .some((v) => v.toLowerCase().includes(q)),
-      )
-    : customers
+  const hasSearch = search.trim().length > 0
 
   return (
     <div className="page">
@@ -128,7 +153,7 @@ export default function Customers() {
           className="search-input"
           placeholder="Search name, email, or company"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={handleSearchChange}
           aria-label="Search customers"
         />
       </div>
@@ -142,9 +167,21 @@ export default function Customers() {
 
       {!loading && !error ? (
         <CustomerTable
-          customers={filtered}
+          customers={customers}
+          sortKey={sortKey}
+          sortDir={sortDir}
+          onSort={handleSort}
+          page={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
           onEdit={openEdit}
           onDelete={handleDelete}
+          emptyTitle={hasSearch ? 'No matching customers' : 'No customers yet'}
+          emptyText={
+            hasSearch
+              ? 'Try a different search term or clear the search box.'
+              : 'Add your first customer to see them listed here.'
+          }
         />
       ) : null}
 
